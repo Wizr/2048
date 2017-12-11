@@ -1,0 +1,14 @@
+Temp/
+Library/
+
+obj/
+Library/
+packages/
+UnityPackageManager/
+.idea
+*.userprefs
+/*.csproj
+/*.sln
+
+.DS_Store
+._*
