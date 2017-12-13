@@ -221,7 +221,8 @@ public class GameController : MonoBehaviour {
             var index = Random.Range(0, nullCellPosList.Count);
             var pos = nullCellPosList[index];
             nullCellPosList.RemoveAt(index);
-            var cellController = CreateCellAtPos(pos, 2);
+            var rndValue = (1 + Random.Range(0, 2)) * 2;
+            var cellController = CreateCellAtPos(pos, rndValue);
             _cellBoard[pos.x, pos.y] = cellController;
             if (++CellCount == _cellTotalCount) return;
         }
