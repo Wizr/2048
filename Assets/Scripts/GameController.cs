@@ -241,37 +241,22 @@ public class GameController : MonoBehaviour {
             cell.SetActive(true);
         }
         else {
-            cell = new GameObject("Cell");
-            var spriteRenderer = cell.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = Resources.Load<Sprite>("2048");
-            spriteRenderer.drawMode = SpriteDrawMode.Sliced;
-            spriteRenderer.size = new Vector2(_gridWidth, _gridWidth);
-            spriteRenderer.sortingLayerName = "Cell";
-            spriteRenderer.color = Color.white;
-
+            cell = Instantiate(Resources.Load<GameObject>("Prefabs/Cell"), Logical2PhysicalPos(x, y),
+                Quaternion.identity);
             cell.transform.parent = _board.transform;
-            cell.transform.position = Logical2PhysicalPos(x, y);
+            var spriteRenderer = cell.GetComponent<SpriteRenderer>();
+            spriteRenderer.size = new Vector2(_gridWidth, _gridWidth);
 
-            var canvasObj = new GameObject("Canvas");
-            var canvas = canvasObj.AddComponent<Canvas>();
-            canvas.transform.SetParent(cell.transform, false);
-            canvas.transform.localScale = new Vector3(_gridWidth / 100, _gridWidth / 100);
-            canvas.sortingLayerName = "Cell";
-            canvas.sortingOrder = 1;
-            var canvasScaler = canvasObj.AddComponent<CanvasScaler>();
-            canvasScaler.dynamicPixelsPerUnit = 10;
-
-            var textObj = new GameObject("Text");
-            var text = textObj.AddComponent<Text>();
-            text.transform.SetParent(canvas.transform, false);
-            text.transform.localScale = new Vector3(100f / 19, 100f / 19);
-            text.alignment = TextAnchor.MiddleCenter;
-            text.font = Resources.Load<Font>("HelveticaNeue");
-            text.fontStyle = FontStyle.Bold;
-
-            script = cell.AddComponent<CellController>();
-            script.Text = textObj;
+            script = cell.GetComponent<CellController>();
             script.GameController = this;
+
+            var canvasObj = cell.transform.GetChild(0);
+            var canvas = canvasObj.GetComponent<Canvas>();
+            canvas.transform.localScale = new Vector3(_gridWidth / 100, _gridWidth / 100);
+
+            var textObj = canvasObj.transform.GetChild(0);
+            var text = textObj.GetComponent<Text>();
+            text.transform.localScale = new Vector3(100f / 19, 100f / 19);
         }
         script.Value = value;
         return cell.GetComponent<CellController>();
